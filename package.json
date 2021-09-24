@@ -56,5 +56,7 @@
   "bugs": {
     "url": "https://github.com/sdillman/EFA-red-cocktails-client/issues"
   },
-  "homepage": "https://github.com/sdillman/EFA-red-cocktails-client#readme"
+  "devDependencies": {
+    "@types/jsonwebtoken": "^8.5.5"
+  }
 }
