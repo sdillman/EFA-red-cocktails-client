@@ -11,3 +11,9 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
+/* THIS app's CSS */
+body {
+  font-family: 'raleway', sans-serif;
+  color: #090909;
+}
