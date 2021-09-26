@@ -14,7 +14,7 @@ interface CommentObj {
     userID: number;
 }
 
-export {
+export type {
     CocktailObj,
     CommentObj
 };
