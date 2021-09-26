@@ -2,10 +2,29 @@ interface CocktailObj {
     cocktailID?: number;  // from local DB if the cocktail has been submitted. Will not be present yet if it has not
     cocktailName: string;  // "strDrink":"The Drink Name" from CocktailDB
     imgURL?: string;  // "strDrinkThumb" from CocktailDB
-    instructions?: JSON;  // need to create an object from "strInstructions" plus whichever of "strIngredient1"(thru 15) and "strMeasure1" (thru 15) have content. Need to match 1 - 2, 2 - 2, etc
-    userID: number;
-    getComments: (userID?: number) => {};
+    instructions?: string;  // need to create an object from "strInstructions" plus whichever of "strIngredient1"(thru 15) and "strMeasure1" (thru 15) have content. Need to match 1 - 2, 2 - 2, etc
+    ingredients?: ingredient[];
+    userID?: number;
+    getComments?: (cocktailID: number) => {};
 }
+
+interface ingredient {
+    name: string;
+    measure: string;
+}
+
+// Example Cocktail output from Database
+// const cocktail = {
+//     cocktailID: 1,
+//     cocktailName: 'Buttery Nipple',
+//     imgURL: 'https://www.google.com',
+//     instructions: 'Mix in equal quantities',
+//     ingredients: [
+//         { name: 'ButterShots', measure: '1 shot'},
+//         { name: 'Balies Irish Cream', measure: '1 shot'},
+//     ],
+//     userID: 1
+// }
 
 interface CommentObj {
     commentID?: number;
