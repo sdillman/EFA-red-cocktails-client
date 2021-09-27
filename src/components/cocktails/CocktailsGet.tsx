@@ -11,8 +11,8 @@ interface State {
 }
 
 interface Props {
-    editCocktailsList?: () => void;
-    deleteCocktailsList?: () => void;
+    editCocktail?: () => void;
+    deleteCocktail?: () => void;
     token: string;
     updateOn: (newToken: string) => void;
 }
@@ -54,6 +54,19 @@ class CocktailsGet extends React.Component<Props, State> {
         }
     }
 
+    editCocktail(props: Props) {
+
+    }
+
+    deleteCocktail = (props: Props) => {
+
+        
+    }
+
+    // insert in the last <td></td> below once that's cleaned up
+    // <Button color="info" onClick={() => {this.props?.editCocktail(); this.props.updateOn()}}>Update</Button>
+    // <Button outline color="danger" onClick={() => {this.props?.deleteCocktail()}}>Delete</Button>
+
     /**
      * Map over a list of cocktails and render them to a table row.
      */
@@ -66,8 +79,7 @@ class CocktailsGet extends React.Component<Props, State> {
                     <td>{item?.imgURL ? <img src={item?.imgURL} /> : null}</td>
                     <td>{item?.instructions}</td>
                     <td>
-                        <Button color="info" onClick={() => {this.props?.editCocktailsList(); this.props.updateOn()}}>Update</Button>
-                        <Button outline color="danger" onClick={() => {this.props?.deleteCocktailsList()}}>Delete</Button>
+
                     </td>
                 </tr>
             )

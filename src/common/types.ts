@@ -9,7 +9,7 @@ interface CocktailObj {
 }
 
 interface ingredient {
-    name: string;
+    ingredientName: string;
     measure: string;
 }
 
@@ -95,5 +95,6 @@ export type {
     cocktailDBResponse,
     CocktailObj,
     CommentObj,
+    ingredient,
     DrinksEntity
 };

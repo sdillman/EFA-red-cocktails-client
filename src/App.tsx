@@ -2,50 +2,82 @@ import React from 'react';
 import 'bootstrap/dist/css/bootstrap.css';
 import './App.css';
 import ValidateSession from '../src/components/auth/ValidateSession';
-import './App.css';
+// import CocktailsGet from './components/cocktails/CocktailsGet';
+import Login from './components/auth/Login';
+import Signup from './components/auth/Signup';
 
+type AppState = {
+  sessionToken: string;
+}
 
-class App extends React.Component{
-  constructor(props :any) {
-    super(props);
+class App extends React.Component<{}, AppState>{
+  constructor() {
+    super({});
     this.state = {
-      sessionToken: null
+      sessionToken: ""
     }
-    this.setToken = this.setToken.bind(this)
   };
 
-setToken(){
-  let sessionToken;
-  if (localStorage.getItem("token")) {
-    sessionToken = localStorage.getItem("token");
-  } else {
-
+  componentDidMount() {
+    this.setToken();
   }
-}
 
-clearToken = () => {
-  localStorage.clear();
-  setSessionToken("");
-}
+  /**
+   * sets value of token to the value of newToken the token within localStorage.
+   */
+  setToken(): void {
+    this.setState({
+      sessionToken: localStorage.getItem("token") || ""
+    });
+  }
 
-render() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
-}
+  /**
+   * Sets value of token to the value of newToken
+   * if token does not exist, creates a new key value pair.
+   * @param newToken string
+   */
+  updateToken(newToken: string): void {
+    localStorage.setItem("token", newToken);
+    this.setToken();
+  }
+
+  /**
+   * Clears local storage and sets the token to an empty string.
+   */
+  clearToken(): void {
+    localStorage.removeItem("token");
+    this.updateToken("");
+  }
+
+  /**
+   * Returns either the `<CocktailsGet />` or the `<ValidateSession />` component based on if the session is valid.
+   */
+  userOnlyViews() {
+    return this.state.sessionToken === localStorage.getItem("token") ?
+        // if the sessionToken and token in local storage match then we can access user-protected route
+        console.log(`Protected routes`)
+        // ? <CocktailsGet {...{
+        //     editCocktailsList: () => {},
+        //     deleteCocktailsList: () => {},
+        //     token: this.state.sessionToken,
+        //     updateOn: this.updateToken
+        //   } } />
+
+        // otherwise if the tokens don't match then we push them back to the validate session page 
+        : <ValidateSession {... { token: this.state.sessionToken } } />
+  }
+
+  render() {
+    return (
+      <div className="App">
+        <header className="App-header">
+          <p>
+            Testing. This is the header
+          </p>
+        </header>
+        <ValidateSession />
+      </div>
+    );
+  }
 }
 export default App;
