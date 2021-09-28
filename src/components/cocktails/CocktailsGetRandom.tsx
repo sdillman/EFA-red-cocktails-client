@@ -4,7 +4,9 @@ import dotenv from 'dotenv';
 import { isTemplateExpression } from 'typescript';
 import { cocktailDBResponse, DrinksEntity, CocktailObj, ingredient } from "../../common/types";
 
-dotenv.config();
+dotenv.config({
+    path: "../../src/common/environment.tsx"
+});
 
 interface cocktail {
     id: string;
@@ -20,6 +22,7 @@ interface State {
 interface Props {
     editCocktailsList?: () => void;
     deleteCocktailsList?: () => void;
+    addToCollection?: (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void;
     token: string;
     updateOn: (newToken: string) => void;
 }
@@ -57,11 +60,11 @@ class CocktailsGetRandom extends React.Component<Props, State> {
         const numberList = Array.from(Array(15).keys());
         numberList.forEach((item: number) => {
             const ingredientName = `strIngredient${item}`;
-            const measure = `strMeasure${item}`;
-            if (drink[ingredientName]) {
+            const ingredientMeasure = `strMeasure${item}`;
+            if (drink[ingredientName as string]) {
                 ingredients.push({
-                    ingredientName: drink[ingredientName],
-                    measure: drink[measure]
+                    name: drink[ingredientName as string],
+                    measure: drink[ingredientMeasure as string]
                 });
             }
         });
@@ -79,7 +82,7 @@ class CocktailsGetRandom extends React.Component<Props, State> {
      * Fetches a random cocktail from The Cocktail DB.
      */
     fetchRandomCocktail = async () => {
-        const cocktail: cocktailDBResponse = await fetch(cocktailRandomURL, {
+        const cocktail: cocktailDBResponse | void = await fetch(cocktailRandomURL, {
             method: 'GET',
             headers: new Headers ({
                 'Content-Type': 'application/json',
@@ -100,21 +103,16 @@ class CocktailsGetRandom extends React.Component<Props, State> {
      * Will pull the contentful ingredients and measures from the cocktail
      * object and prepare a table of those to be injected into the Render
      */
-    ingredientsMapper(cocktail: CocktailObj | null) {
+    ingredientsMapper(cocktail: CocktailObj) {
         if (cocktail?.ingredients?.length) {
             return null;
         }
         return (
             <ul>
-                {
-                    cocktail?.ingredients?.forEach((item: ingredient) => {
-                        return (
-                            <li key={item.name}>
-                                {item.name - item.measure}
-                            </li>
-                        )
-                    })
-                }
+                {cocktail?.ingredients?.map((item: ingredient) => {
+                    const { name, measure } = item;
+                    return (<li key={name}>{`${name} - ${measure}`}</li>);
+                })}
             </ul>
         )
     }
@@ -124,16 +122,16 @@ class CocktailsGetRandom extends React.Component<Props, State> {
      */
     addToCollection(e: Event) {
         e.preventDefault();
-        fetch(`${APIURL}/cocktail/add/`, {
+        fetch(`${process.env.APIURL}`, {
             method: 'POST',
             body: JSON.stringify(this.state.randomCocktail),
             headers: new Headers ({
                 'Content-Type': 'application/json',
-                'Authorization': `Bearer ${props.token}`  //May need Bearer here
+                'Authorization': `Bearer ${this.props.token}`  //May need Bearer here
             })
         }).then( (res) => res.json())
         .then((cocktailData) => {
-            console.log('GROCERIES DATA '+ cocktailData);
+            console.log('Cocktail DATA '+ cocktailData);
             // props.fetchGroceryList(); 
         });
     }
@@ -142,12 +140,20 @@ class CocktailsGetRandom extends React.Component<Props, State> {
         return (
             <div className="container">
                 <div>
-                    <h1>{this.state.cocktails.cocktailName}</h1>
+                    <h1>{this.state.randomCocktail?.cocktailName}</h1>
                     <br />
-                    <p>{ this.state.cocktails.instructions }</p>
-                    {this.ingredientsMapper(this.state.cocktails)}
+                    <p>{this.state.randomCocktail?.instructions}</p>
+                    {this.state.randomCocktail ? this.ingredientsMapper(this.state.randomCocktail) : null}
                 </div>
-                <Button color="info" onClick={() => {this.props?.addToCollection(e); this.props.updateOn()}}>Add To My Collection!</Button>
+                {/* <Button
+                    color="info"
+                    onClick={(e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+                        this.props?.addToCollection?.(e);
+                        this.props.updateOn()
+                    }}
+                >
+                        Add To My Collection!
+                </Button> */}
             </div>
         )
     };

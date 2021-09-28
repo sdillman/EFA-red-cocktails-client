@@ -1,5 +1,4 @@
 import React from 'react';
-import ValidateSession from './ValidateSession';
 import { Form, FormGroup, Label, Input, Button } from 'reactstrap';
 import APIURL from '../../common/environment';
 

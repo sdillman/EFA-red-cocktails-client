@@ -76,7 +76,7 @@ class CocktailsGet extends React.Component<Props, State> {
                 <tr key={item?.cocktailID}>
                     <th scope="row">{item?.cocktailID}</th>
                     <td>{item.cocktailName}</td>
-                    <td>{item?.imgURL ? <img src={item?.imgURL} /> : null}</td>
+                    <td>{item?.imgURL ? <img src={item?.imgURL} alt={item?.imgURL} /> : null}</td>
                     <td>{item?.instructions}</td>
                     <td>
 

@@ -3,8 +3,8 @@ import 'bootstrap/dist/css/bootstrap.css';
 import './App.css';
 import ValidateSession from '../src/components/auth/ValidateSession';
 // import CocktailsGet from './components/cocktails/CocktailsGet';
-import Login from './components/auth/Login';
-import Signup from './components/auth/Signup';
+// import Login from './components/auth/Login';
+// import Signup from './components/auth/Signup';
 
 type AppState = {
   sessionToken: string;

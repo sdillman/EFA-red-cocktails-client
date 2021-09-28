@@ -26,7 +26,6 @@ interface LoginProps {
     async handleSubmit(event :any) {
         event.preventDefault();
 
-        //if (username !== " " && password !== " ") {
         await fetch(`${APIURL}/user/login`, {
             method: "POST",
             body: JSON.stringify({ user: { email: this.state.email, password: this.state.password } }),
@@ -90,7 +89,7 @@ interface LoginProps {
                     <Button
                         className="btn-auth"
                         type="submit"
-                        onClick={this.handleSubmit}
+                        onClick={this.handleSubmit.bind(this)}
                     > Shaken or Stirred
                     </Button>
                 </Form>
