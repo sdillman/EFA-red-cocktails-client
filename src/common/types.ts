@@ -8,8 +8,14 @@ interface CocktailObj {
     getComments?: (cocktailID: number) => {};
 }
 
+interface cocktail {
+    id: string;
+    ingredientName: string;
+    quantity: string;
+}
+
 interface ingredient {
-    name: string;
+    ingredientName: string;
     measure: string;
 }
 
@@ -29,6 +35,7 @@ interface DrinksEntity {
 }
   
 export type {
+    cocktail,
     cocktailDBResponse,
     CocktailObj,
     CommentObj,

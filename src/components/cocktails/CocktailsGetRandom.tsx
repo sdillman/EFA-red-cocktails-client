@@ -8,12 +8,6 @@ dotenv.config({
     path: "../../src/common/environment.tsx"
 });
 
-interface cocktail {
-    id: string;
-    ingredient: string;
-    quantity: string;
-}
-
 interface State {
     randomCocktail: CocktailObj | null;
     token: string;
@@ -63,7 +57,7 @@ class CocktailsGetRandom extends React.Component<Props, State> {
             const ingredientMeasure = `strMeasure${item}`;
             if (drink[ingredientName as string]) {
                 ingredients.push({
-                    name: drink[ingredientName as string],
+                    ingredientName: drink[ingredientName as string],
                     measure: drink[ingredientMeasure as string]
                 });
             }
@@ -110,8 +104,8 @@ class CocktailsGetRandom extends React.Component<Props, State> {
         return (
             <ul>
                 {cocktail?.ingredients?.map((item: ingredient) => {
-                    const { name, measure } = item;
-                    return (<li key={name}>{`${name} - ${measure}`}</li>);
+                    const { ingredientName, measure } = item;
+                    return (<li key={ingredientName}>{`${ingredientName} - ${measure}`}</li>);
                 })}
             </ul>
         )
