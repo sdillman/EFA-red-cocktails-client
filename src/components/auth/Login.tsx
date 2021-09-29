@@ -22,11 +22,13 @@ interface LoginProps {
         password: ''
       }
     };
+
+    
     
     async handleSubmit(event :any) {
         event.preventDefault();
 
-        await fetch(`${APIURL}/user/login`, {
+        await fetch(`${APIURL}/auth/login`, {
             method: "POST",
             body: JSON.stringify({ user: { email: this.state.email, password: this.state.password } }),
             headers: new Headers({
@@ -60,7 +62,7 @@ interface LoginProps {
                             htmlFor="email">Email</Label>
                         <Input
                             name="email"
-                            placeholder="yeschef@email.com"
+                            placeholder="your@email.com"
                             type="email"
                             aria-required="true"
                             required={true}
@@ -75,11 +77,11 @@ interface LoginProps {
                             htmlFor="password">Password</Label>
                         <Input
                             name="password"
-                            placeholder="the secret sauce"
+                            placeholder="your password"
                             type="text"
                             aria-required="true"
                             required={true}
-                            minLength={6}
+                            // minLength={6}
                             onChange={(e: React.ChangeEvent<HTMLInputElement>) => this.setState({ password: e.target.value }) }
                             value={this.state.password}
                         />

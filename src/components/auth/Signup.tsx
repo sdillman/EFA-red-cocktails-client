@@ -23,7 +23,7 @@ class Signup extends React.Component<SignupProps, SignupState> {
       this.state = {
         email: '',
         password: '',
-        role: "user"
+        role: "0"
       }
     };
   
@@ -32,13 +32,13 @@ class Signup extends React.Component<SignupProps, SignupState> {
     }
 
     handleSignup = async() =>  {
-        await fetch(`${APIURL}/user/signup`, {
+        await fetch(`${APIURL}/auth/signup/`, {
             method: "POST", 
             body: JSON.stringify({
                 user: { 
                     email: this.state.email, 
                     password: this.state.password,
-                    role: "user"
+                    role: "2"
                 } 
             }),
             headers: new Headers({
