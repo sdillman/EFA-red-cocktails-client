@@ -5,7 +5,7 @@ import { isTemplateExpression } from 'typescript';
 import { cocktailDBResponse, DrinksEntity, CocktailObj, ingredient } from "../../common/types";
 
 dotenv.config({
-    path: "../../src/common/environment.tsx"
+    path: "../../.env"
 });
 
 interface State {
@@ -18,7 +18,6 @@ interface Props {
     deleteCocktailsList?: () => void;
     addToCollection?: (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void;
     token: string;
-    updateOn: (newToken: string) => void;
 }
 
 let cocktailRandomURL = `https://www.thecocktaildb.com/api/json/v2/${process.env.APIKEY}/random.php`;
@@ -88,7 +87,6 @@ class CocktailsGetRandom extends React.Component<Props, State> {
                 const cleanDrink = this.enrichData(data.drinks[0]);
                 this.setState({ randomCocktail: cleanDrink });
             }
-            
         })
         .catch(console.error);
     }
@@ -116,7 +114,7 @@ class CocktailsGetRandom extends React.Component<Props, State> {
      */
     addToCollection(e: Event) {
         e.preventDefault();
-        fetch(`${process.env.APIURL}`, {
+        fetch(`${process.env.COCKTAIL_RANDOM}`, {
             method: 'POST',
             body: JSON.stringify(this.state.randomCocktail),
             headers: new Headers ({
@@ -143,7 +141,6 @@ class CocktailsGetRandom extends React.Component<Props, State> {
                     color="info"
                     onClick={(e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
                         this.props?.addToCollection?.(e);
-                        this.props.updateOn()
                     }}
                 >
                         Add To My Collection!

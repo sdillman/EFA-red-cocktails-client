@@ -2,7 +2,9 @@ import React from 'react';
 import 'bootstrap/dist/css/bootstrap.css';
 import './App.css';
 import ValidateSession from '../src/components/auth/ValidateSession';
-// import CocktailsGet from './components/cocktails/CocktailsGet';
+import CocktailsGetRandom from '../src/components/cocktails/CocktailsGetRandom';
+import Nav from './common/navigationbar';
+import NavigationBar from './common/navigationbar';
 // import Login from './components/auth/Login';
 // import Signup from './components/auth/Signup';
 
@@ -55,7 +57,7 @@ class App extends React.Component<{}, AppState>{
   userOnlyViews() {
     return this.state.sessionToken === localStorage.getItem("token") ?
         // if the sessionToken and token in local storage match then we can access user-protected route
-        console.log(`Protected routes`)
+        console.log(`Protected routes - user`)
         // ? <CocktailsGet {...{
         //     editCocktailsList: () => {},
         //     deleteCocktailsList: () => {},
@@ -72,10 +74,15 @@ class App extends React.Component<{}, AppState>{
       <div className="App">
         <header className="App-header">
           <p>
-            Testing. This is the header
+            Testing. Let's Talk Cocktails!
           </p>
+          
         </header>
+        <CocktailsGetRandom token={ this.state.sessionToken } />
         <ValidateSession />
+        <NavigationBar token={this.state.sessionToken} />
+        {this.userOnlyViews()}
+        
       </div>
     );
   }
