@@ -31,7 +31,7 @@ class Signup extends React.Component<SignupProps, SignupState> {
 
     }
 
-    handleSignup = async (event :Event) =>  {
+    handleSignup = async (event :React.SyntheticEvent) =>  {
         event.preventDefault();
         await fetch(`${APIURL}/auth/signup/`, {
             method: "POST", 
