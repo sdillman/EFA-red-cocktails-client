@@ -8,7 +8,8 @@ switch (window.location.hostname) {
         break;
     //this is the depoloyed react app - model from blue badge project
     case 'sd-efa-red-lets-talk-cocktails.herokuapp.com' :
-    APIURL = 'https://sd-efa-red-cocktails-server.herokuapp.com'
+        APIURL = 'https://sd-efa-red-cocktails-server.herokuapp.com'
+        break;
 }
 
 export default APIURL;
