@@ -2,6 +2,7 @@ import React from 'react';
 import { Button } from 'reactstrap';
 import dotenv from 'dotenv';
 import { CocktailObj } from "../../common/types";
+import APIURL from '../../common/environment';
 
 dotenv.config();
 
@@ -41,7 +42,7 @@ class CocktailsGet extends React.Component<Props, State> {
      * Fetches a list of cocktails based on the user's token.
      */
     async fetchCocktailList() {
-        const cocktails: CocktailObj[] = await fetch('http://localhost:3000/cocktail/mine', {
+        const cocktails: CocktailObj[] = await fetch(`${APIURL}/cocktail/mine`, {
             method: 'GET',
             headers: new Headers ({
                 'Content-Type': 'application/json',

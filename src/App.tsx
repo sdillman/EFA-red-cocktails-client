@@ -2,9 +2,8 @@ import React from 'react';
 import 'bootstrap/dist/css/bootstrap.css';
 import './App.css';
 import ValidateSession from '../src/components/auth/ValidateSession';
-import CocktailsGetRandom from '../src/components/cocktails/CocktailsGetRandom';
-import Nav from './common/navigationbar';
-import NavigationBar from './common/navigationbar';
+// import CocktailsGetRandom from '../src/components/cocktails/CocktailsGetRandom';
+// import NavigationBar from './common/navigationbar';
 // import Login from './components/auth/Login';
 // import Signup from './components/auth/Signup';
 
@@ -78,11 +77,7 @@ class App extends React.Component<{}, AppState>{
           </p>
           
         </header>
-        <CocktailsGetRandom token={ this.state.sessionToken } />
         <ValidateSession />
-        <NavigationBar token={this.state.sessionToken} />
-        {this.userOnlyViews()}
-        
       </div>
     );
   }

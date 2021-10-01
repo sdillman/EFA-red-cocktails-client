@@ -7,8 +7,8 @@ switch (window.location.hostname) {
         APIURL = 'http://localhost:3000';
         break;
     //this is the depoloyed react app - model from blue badge project
-    // case 'listo-sre.herokuapp.com' :
-    // APIURL = 'https://listo-efa.herokuapp.com'
+    case 'sd-efa-red-lets-talk-cocktails.herokuapp.com' :
+    APIURL = 'https://sd-efa-red-lets-talk-cocktails.herokuapp.com'
 }
 
 export default APIURL;
