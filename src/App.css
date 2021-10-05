@@ -41,7 +41,7 @@
 /* THIS app's CSS */
 .App-header {
   background-color: #ced5f5;
-  min-height: 70vh;
+  min-height: 10vh;
   display: flex;
   color: #090909;
   flex-direction: column;
@@ -53,13 +53,17 @@
   font-style: normal;
 }
 
-h1, h2 {
+h1, h2, h3, h4, h5, h6 {
   font-family: 'hwt-republic-gothic-solid', sans-serif;
-  }
+}
 
-  .container {
-    background-color: #eaecf3;
-    max-width: 100%;
-    padding: 1em;
-    margin: auto;
-    }
+.container {
+  background-color: #eaecf3;
+  max-width: 100%;
+  padding: 1em;
+  margin: auto;
+}
+
+.card {
+  box-shadow: 0 15px 35px rgb(50 50 93 / 10%), 0 5px 15px rgb(0 0 0 / 7%);
+}

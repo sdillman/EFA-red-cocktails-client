@@ -1,26 +1,30 @@
 import React from 'react';
-import 'bootstrap/dist/css/bootstrap.css';
-import './App.css';
-import ValidateSession from '../src/components/auth/ValidateSession';
-// import CocktailsGetRandom from '../src/components/cocktails/CocktailsGetRandom';
+import CocktailsGetRandom from '../src/components/cocktails/CocktailsGetRandom';
+import CocktailsGet from '../src/components/cocktails/CocktailsGet';
 // import NavigationBar from './common/navigationbar';
 // import Login from './components/auth/Login';
 // import Signup from './components/auth/Signup';
+import 'bootstrap/dist/css/bootstrap.css';
+import './App.css';
 
 type AppState = {
   sessionToken: string;
 }
 
-class App extends React.Component<{}, AppState>{
-  constructor() {
-    super({});
+type AppProps = {}
+
+class App extends React.Component<AppProps, AppState>{
+  constructor(props: AppProps) {
+    super(props);
     this.state = {
       sessionToken: ""
     }
   };
 
   componentDidMount() {
-    this.setToken();
+    this.setState({
+      sessionToken: localStorage.getItem("token") || ""
+    });
   }
 
   /**
@@ -54,30 +58,27 @@ class App extends React.Component<{}, AppState>{
    * Returns either the `<CocktailsGet />` or the `<ValidateSession />` component based on if the session is valid.
    */
   userOnlyViews() {
-    return this.state.sessionToken === localStorage.getItem("token") ?
-        // if the sessionToken and token in local storage match then we can access user-protected route
-        console.log(`Protected routes - user`)
-        // ? <CocktailsGet {...{
-        //     editCocktailsList: () => {},
-        //     deleteCocktailsList: () => {},
-        //     token: this.state.sessionToken,
-        //     updateOn: this.updateToken
-        //   } } />
-
-        // otherwise if the tokens don't match then we push them back to the validate session page 
-        : <ValidateSession {... { token: this.state.sessionToken } } />
+    return this.state.sessionToken === localStorage.getItem("token")
+      ? 
+      <CocktailsGet {...{
+          editCocktailsList: () => {},
+          deleteCocktailsList: () => {},
+          token: this.state.sessionToken,
+          updateOn: this.updateToken
+        } } />
+      // otherwise if the tokens don't match then we push them back to the validate session page 
+      : <CocktailsGetRandom {... { sessionToken: this.state.sessionToken, updateToken: this.updateToken }} />;
   }
 
   render() {
     return (
       <div className="App">
         <header className="App-header">
-          <p>
-            Testing. Let's Talk Cocktails!
-          </p>
-          
+          <h1>
+            Let's Talk Cocktails!
+          </h1>
         </header>
-        <ValidateSession />
+        {this.userOnlyViews()}
       </div>
     );
   }

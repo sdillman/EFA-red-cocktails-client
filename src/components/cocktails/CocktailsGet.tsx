@@ -1,7 +1,19 @@
 import React from 'react';
-import { Button } from 'reactstrap';
+import {
+    Button,
+    Card,
+    CardBody,
+    CardFooter,
+    CardImg,
+    CardText,
+    CardTitle,
+    Container,
+    ListGroup,
+    ListGroupItem,
+    Row
+} from 'reactstrap';
 import dotenv from 'dotenv';
-import { CocktailObj } from "../../common/types";
+import { CocktailObj, ingredient } from "../../common/types";
 import APIURL from '../../common/environment';
 
 dotenv.config();
@@ -17,10 +29,6 @@ interface Props {
     token: string;
     updateOn: (newToken: string) => void;
 }
-
-let cocktailRandomURL = `https://www.thecocktaildb.com/api/json/v2/${process.env.APIKEY}/random.php`;
-
-console.log(cocktailRandomURL);
 
 /**
  * Renders a table with 1 row for each cocktail.
@@ -48,8 +56,12 @@ class CocktailsGet extends React.Component<Props, State> {
                 'Content-Type': 'application/json',
                 'Authorization': `Bearer ${this.state.token}`
             })
-        }).then( data => data.json())
-        .catch(console.error);
+        })
+        .then( data => data.json())
+        .catch(error => {
+            console.error("Let's Talk Cocktails was unable fetch the users coctail list.");
+            console.error(error);
+        });
         if (cocktails.length) {
             this.setState({ cocktails });
         }
@@ -64,6 +76,24 @@ class CocktailsGet extends React.Component<Props, State> {
         
     }
 
+    /**
+     * Will pull the contentful ingredients and measures from the cocktail
+     * object and prepare a table of those to be injected into the Render
+     */
+    ingredientsMapper(cocktail: any) {
+        if (!cocktail?.ingredients?.length) {
+            return null;
+        }
+        return (
+            <ListGroup>
+                {cocktail?.ingredients?.map((item: ingredient) => {
+                    const { ingredientName, measure } = item;
+                    return (<ListGroupItem className="list-group-item" key={ingredientName}>{`${ingredientName} - ${measure}`}</ListGroupItem>);
+                })}
+            </ListGroup>
+        )
+    }
+
     // insert in the last <td></td> below once that's cleaned up
     // <Button color="info" onClick={() => {this.props?.editCocktail(); this.props.updateOn()}}>Update</Button>
     // <Button outline color="danger" onClick={() => {this.props?.deleteCocktail()}}>Delete</Button>
@@ -74,27 +104,34 @@ class CocktailsGet extends React.Component<Props, State> {
     cocktailListMapper() {
         return this.state.cocktails.map((item: CocktailObj) => {
             return(
-                <tr key={item?.cocktailID}>
-                    <th scope="row">{item?.cocktailID}</th>
-                    <td>{item.cocktailName}</td>
-                    <td>{item?.imgURL ? <img src={item?.imgURL} alt={item?.imgURL} /> : null}</td>
-                    <td>{item?.instructions}</td>
-                    <td>
-
-                    </td>
-                </tr>
-            )
-        })
+                <Card sm='auto' md={{ size: 4 }}>
+                    <CardImg top width="100%" src={item?.imgURL} alt={item?.cocktailName} />
+                    <CardBody>
+                        <CardTitle tag="h3">{item?.cocktailName}</CardTitle>
+                        <CardText tag="div">
+                            {item ? this.ingredientsMapper(item) : null}
+                        </CardText>
+                        <CardFooter className="text-muted">
+                            <p>{item?.instructions}</p>
+                            <Button color="info" onClick={() => {}}>Update</Button>
+                            <Button outline color="danger" onClick={() => {}}>Delete</Button>
+                        </CardFooter>
+                    </CardBody>
+                </Card>
+            );
+        });
     }
 
     render() {
         return (
-            <div className="container">
-                <h1>My Cocktails Collection</h1>
-                <table>
+            <Container>
+                <Row>
+                    <h2>My Cocktails Collection</h2>
+                </Row>
+                <Row>
                     {this.cocktailListMapper()}
-                </table>
-            </div>
+                </Row>
+            </Container>
         );
     };
 };

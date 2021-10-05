@@ -5,6 +5,8 @@ import APIURL from '../../common/environment';
 interface LoginState {
     email: string;
     password: string;
+    sessionToken: string;
+    isValid: boolean;
 }
 
 interface LoginProps {
@@ -14,47 +16,56 @@ interface LoginProps {
 /**
  * Renders a form for user login.
  */
- class Login extends React.Component<LoginProps, LoginState> {
+class Login extends React.Component<LoginProps, LoginState> {
     constructor(props: LoginProps) {
       super(props);
       this.state = {
         email: '',
-        password: ''
+        password: '',
+        sessionToken: '',
+        isValid: false
       }
     };
 
-    
-    
     async handleSubmit(event :any) {
         event.preventDefault();
+        const frm = (event.target as HTMLButtonElement).closest('form');
+        const isValid = frm?.checkValidity() || false;
+        this.setState({ isValid: isValid });
+        frm?.reportValidity();
 
+        if (!this.state.isValid) {
+            return;
+        }
         await fetch(`${APIURL}/auth/login`, {
             method: "POST",
+            mode: 'no-cors',
             body: JSON.stringify({ user: { email: this.state.email, password: this.state.password } }),
             headers: new Headers({
                 "Content-Type": "application/json"
             })
         })
-            .then((res) => res.json())
-            // takes the session token from the response and passes it to the updatetoken object
-            .then((data) => {
-                //displays what message the server has programmed
-                window.alert(data.message);
+        .then((res) => res.json())
+        // takes the session token from the response and passes it to the updatetoken object
+        .then((data) => {
+            //displays what message the server has programmed
+            window.alert(data.message);
 
-                if (data.sessionToken) {
-                    this.props.updateToken(data.sessionToken);
-                }
-            })
-            .catch((error) => {
-                console.log(error.message)
-            })
+            if (data.sessionToken) {
+                this.props.updateToken(data.sessionToken);
+            }
+        })
+        .catch(error => {
+            console.error("Let's Talk Cocktails was unable to login the user.");
+            console.error(error);
+        });
     };
     
     render() {
         return (
             <div className="container">
-                <h1>Log In</h1>
-                <Form onSubmit={this.handleSubmit}>
+                <h2>Log In</h2>
+                <Form onSubmit={this.handleSubmit.bind(this)}>
                     <FormGroup>
                         
                         <Label
@@ -66,8 +77,11 @@ interface LoginProps {
                             type="email"
                             aria-required="true"
                             required={true}
-                            onChange={(e: React.ChangeEvent<HTMLInputElement>) => this.setState({ email: e.target.value}) }
-                            value={this.state.email}     
+                            onChange={(e: React.ChangeEvent<HTMLInputElement>) => this.setState({ email: e.target.value }) }
+                            value={this.state.email} 
+                            oninput="setCustomValidity('')"
+                            oninvalid="setCustomValidity('Must be a valid email address.')"
+
                     />
                     </FormGroup>
                     
@@ -78,10 +92,10 @@ interface LoginProps {
                         <Input
                             name="password"
                             placeholder="your password"
-                            type="text"
+                            type="password"
                             aria-required="true"
                             required={true}
-                            // minLength={6}
+                            minLength={6}
                             onChange={(e: React.ChangeEvent<HTMLInputElement>) => this.setState({ password: e.target.value }) }
                             value={this.state.password}
                         />
@@ -89,7 +103,7 @@ interface LoginProps {
                 <br>
                 </br>
                     <Button
-                        className="btn-auth"
+                        color="secondary"
                         type="submit"
                         onClick={this.handleSubmit.bind(this)}
                     > Shaken or Stirred
