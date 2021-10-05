@@ -1,4 +1,4 @@
-# Welcome to Lets Talk COCKTAILS! 👋
+# Welcome to Let's Talk COCKTAILS! 👋
 [![Documentation](https://img.shields.io/badge/documentation-yes-brightgreen.svg)](https://github.com/sdillman/EFA-red-cocktails-client#readme)
 [![Maintenance](https://img.shields.io/badge/Maintained%3F-yes-green.svg)](https://github.com/sdillman/EFA-red-cocktails-client/graphs/commit-activity)
 
