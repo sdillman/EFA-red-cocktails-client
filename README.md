@@ -1,6 +1,5 @@
 # Welcome to Let's Talk COCKTAILS! 👋
-[![Documentation](https://img.shields.io/badge/documentation-yes-brightgreen.svg)](https://github.com/sdillman/EFA-red-cocktails-client#readme)
-[![Maintenance](https://img.shields.io/badge/Maintained%3F-yes-green.svg)](https://github.com/sdillman/EFA-red-cocktails-client/graphs/commit-activity)
+[![Documentation](https://img.shields.io/badge/documentation-yes-brightgreen.svg)](https://github.com/sdillman/EFA-red-cocktails-client#readme) [![Maintenance](https://img.shields.io/badge/Maintained%3F-yes-green.svg)](https://github.com/sdillman/EFA-red-cocktails-client/graphs/commit-activity) [![nodejs](https://img.shields.io/badge/nodejs-%5E16.4.0-blue.svg)](https://nodejs.org/en/)  [![npm](https://img.shields.io/badge/npm-%5E7.20.0-blue.svg)](https://nodejs.org/en/) [![TypeScript](https://badgen.net/badge/TypeScript/^4.4/blue)](http://www.typescriptlang.org/)
 
 Repo for the client side of the _Let's Talk COCKTAILS!_ capstone project for Eleven Fifty Academy, inspired by someone who wants ideas for new cocktails to play with, and wants to share with his friends. This is a full-stack PERN school project at the time of writing, October 2021. There are many enhancements I'd like to make when school is done and I have time. I am happy to hear issues and ideas.
 
