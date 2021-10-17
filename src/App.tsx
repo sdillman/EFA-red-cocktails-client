@@ -1,9 +1,8 @@
 import React from 'react';
+import NavigationBar from "../src/common/navigationbar";
 import CocktailsGetRandom from '../src/components/cocktails/CocktailsGetRandom';
 import CocktailsGet from '../src/components/cocktails/CocktailsGet';
-// import NavigationBar from './common/navigationbar';
-// import Login from './components/auth/Login';
-// import Signup from './components/auth/Signup';
+import Header from "../src/components/header"
 import 'bootstrap/dist/css/bootstrap.css';
 import './App.css';
 
@@ -28,7 +27,16 @@ class App extends React.Component<AppProps, AppState>{
   }
 
   /**
-   * sets value of token to the value of newToken the token within localStorage.
+   * Sets the local storage token to the value passed.
+   * @param newToken string
+   */
+   updateToken(newToken: string): void {
+    localStorage.setItem("token", newToken);
+    this.setToken();
+  }
+
+  /**
+   * Sets a state token to the value of the token within localStorage.
    */
   setToken(): void {
     this.setState({
@@ -37,21 +45,11 @@ class App extends React.Component<AppProps, AppState>{
   }
 
   /**
-   * Sets value of token to the value of newToken
-   * if token does not exist, creates a new key value pair.
-   * @param newToken string
-   */
-  updateToken(newToken: string): void {
-    localStorage.setItem("token", newToken);
-    this.setToken();
-  }
-
-  /**
-   * Clears local storage and sets the token to an empty string.
+   * Removes the token from localStorage.
    */
   clearToken(): void {
     localStorage.removeItem("token");
-    this.updateToken("");
+    // this.updateToken("");  -- note to me - we just removed it - why then update to empty string?
   }
 
   /**
@@ -73,12 +71,10 @@ class App extends React.Component<AppProps, AppState>{
   render() {
     return (
       <div className="App">
-        <header className="App-header">
-          <h1>
-            Let's Talk Cocktails!
-          </h1>
-        </header>
-        {this.userOnlyViews()}
+        <NavigationBar token={this.state.sessionToken} />
+        <Header />
+        <p>Home</p>
+        {/* {this.userOnlyViews()} */}
       </div>
     );
   }

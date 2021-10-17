@@ -2,13 +2,28 @@ import ReactDOM from 'react-dom';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './index.css';
 import App from './App';
+import About from "./Pages/about";
+import Cocktail from "./Pages/cocktail";
+import Register from "./Pages/register";
+import Login from "./Pages/login";
+import Logout from "./Pages/logout";
 import reportWebVitals from './reportWebVitals';
-import { BrowserRouter as Router } from 'react-router-dom';
+import { BrowserRouter, Route } from 'react-router-dom';
 
 ReactDOM.render(
-  <Router>
-    <App />
-  </Router>,
+  <div className="App">
+    <BrowserRouter>
+      <Route exact path="/register" component={Register} />
+      <Route exact path="/log-out" component={Logout} />
+      <Route exact path="/log-in" component={Login} />
+      <Route exact path="/admin" component={App} />
+      <Route exact path="/random-cocktail" component={Cocktail} />
+      <Route exact path="/my-comments" component={App} />
+      <Route exact path="/my-cocktails" component={App} />
+      <Route exact path="/about" component={About} />
+      <Route exact path="/" component={App} />
+    </BrowserRouter>
+  </div>,
   document.getElementById('root')
 );
 

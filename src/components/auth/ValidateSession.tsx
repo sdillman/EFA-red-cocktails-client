@@ -60,4 +60,21 @@ class ValidateSession extends React.Component<Props, State> {
     }
 };
 
+
+// react router (EmJ) react router issues that Justin helped to solve
+// don't do admin privileges in localstorage
+// functionApp ({isAdmin} as a prop) {
+//     return(
+//         isAdmin && 5;
+//     )
+
+// if isAdmin false, then returns false. If true, returns '5'
+
+// let isAdmin = true
+// return (
+//     {isAdmin && <>Admin route</>} if isAdmin false, simply goesn't display the option
+// )
+// }
+
+
 export default ValidateSession;
