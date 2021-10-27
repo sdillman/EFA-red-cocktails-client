@@ -105,3 +105,4 @@ dist
 .tern-port
 /.vscode
 /src/.env
+/src/components/auth/ValidateSession.tsx.bak

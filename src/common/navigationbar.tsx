@@ -1,10 +1,10 @@
 import React from 'react';
 import {
     Collapse,
+    Nav,
     Navbar,
     NavbarBrand,
     NavbarToggler,
-    Nav,
     NavItem
 } from 'reactstrap';
 import { NavLink } from 'react-router-dom';
@@ -12,26 +12,41 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import '../App.css';
 
 interface NavigationBarProps {
-    token: string | null;
+    location: {
+        state: {
+            sessionToken: string;
+            role: number;
+        }
+    }
 }
  
 interface NavigationBarState {
     isOpen: boolean;
     sessionToken: string | null;
-    isLoggedIn: boolean;
-    isAdmin: boolean;
+    role: number;
 }
  
 class NavigationBar extends React.Component<NavigationBarProps, NavigationBarState> {
     constructor(props: NavigationBarProps, ) {
         super(props);
+        const { location: { state: { sessionToken = '', role = 0 } = {} } = {} } = props;
         this.state = { 
             isOpen: false,
-            sessionToken: this.props.token,
-            isLoggedIn: false,
-            isAdmin: false
+            sessionToken,
+            role
         };
+    }
 
+    componentDidMount() {
+        const  { location: { state: { sessionToken = '', role = 0 } = {} } = {} } = this.props;
+        this.setState({ sessionToken, role });
+    }
+
+    componentDidUpdate(prevProps: NavigationBarProps) {
+        if ( this.props.location.state.sessionToken !== prevProps.location.state.sessionToken) {
+            const  { location: { state: { sessionToken = '', role = 0 } = {} } = {} } = this.props;
+            this.setState({ sessionToken, role });
+        }
     }
 
     toggle() {
@@ -40,124 +55,150 @@ class NavigationBar extends React.Component<NavigationBarProps, NavigationBarSta
         });
     }
 
-    ClearToken() {
-        localStorage.setItem("token", "");
-        this.setState({
-            sessionToken: ""
-        });
-    }
-
     render() {
+        const  { sessionToken = '', role = 0 } = this.state;
         return ( 
             <Navbar color="light" light expand="lg">
               <NavbarBrand href="/">Let's Talk Cocktails!</NavbarBrand>
               <NavbarToggler aria-controls="basic-navbar-nav" onClick={this.toggle.bind(this)} />
               <Collapse id="basic-navbar-nav" isOpen={this.state.isOpen} navbar>
-                <Nav navbar className="nav-justified navbar-nav w-100">
-                    {/* Authenticated user Links */}
-                    {this.state.isLoggedIn &&
-                    <>
+                  <Nav className="mr-auto" navbar>
+                    {!this.state.sessionToken
+                    ? null
+                    : (<>
                         <NavItem>
-                            <NavLink className="nav-link" to={{
-                                pathname: this.state.isLoggedIn ? "/my-cocktails" : "/",
-                                search: '',
-                                state: { sessionToken: this.state.sessionToken }
-                            }}
+                            <NavLink
+                                className="nav-link"
+                                to={{
+                                    pathname: this.state.sessionToken ? "/cocktail-list" : "/",
+                                    search: '',
+                                    state: { sessionToken, role, userId: -1 }
+                                }}
+                                onClick={this.toggle.bind(this)}
                             >
                                 My Cocktails
                             </NavLink>
                         </NavItem>
                         <NavItem>
-                            <NavLink className="nav-link" to={{
-                                pathname: this.state.isLoggedIn ? "/my-comments" : "/",
-                                search: '',
-                                state: { sessionToken: this.state.sessionToken }
-                            }}
+                            <NavLink
+                                className="nav-link"
+                                to={{
+                                    pathname: this.state.sessionToken ? "/comment-list" : "/",
+                                    search: '',
+                                    state: { sessionToken, role }
+                                }}
+                                onClick={this.toggle.bind(this)}
                             >
                                 My Comments
                             </NavLink>
                         </NavItem>
                         <NavItem>
-                            <NavLink className="nav-link" to={{
-                                pathname: this.state.isLoggedIn ? "/all-cocktails" : "/",
-                                search: '',
-                                state: { sessionToken: this.state.sessionToken }
-                            }}
+                            <NavLink
+                                className="nav-link"
+                                to={{
+                                    pathname: this.state.sessionToken ? "/cocktail-list" : "/",
+                                    search: '',
+                                    state: { sessionToken, role, userId: 0 }
+                                }}
+                                onClick={this.toggle.bind(this)}
                             >
                                 All Cocktails
                             </NavLink>
                         </NavItem>
-                    </>
+                    </>)
                     }
                     <NavItem>
-                        <NavLink className="nav-link" to={{
-                                pathname: "/random-cocktail",
+                        <NavLink
+                            className="nav-link"
+                            to={{
+                                pathname: "/cocktail",
                                 search: '',
-                                state: { sessionToken: this.state.sessionToken }
+                                state: { sessionToken, role }
                             }}
+                            onClick={this.toggle.bind(this)}
                         >
-                                Random Cocktail
+                            Random Cocktail
                         </NavLink>
                     </NavItem>
                     <NavItem>
-                        <NavLink className="nav-link" to={{
+                        <NavLink
+                            className="nav-link"
+                            to={{
                                 pathname: "/about",
                                 search: '',
-                                state: { sessionToken: this.state.sessionToken }
+                                state: { sessionToken, role }
                             }}
+                            onClick={this.toggle.bind(this)}
                         >
-                                About
+                            About
                         </NavLink>
                     </NavItem>
                     {/* Admin Links */}
-                    {this.state.isAdmin &&
-                    <NavItem>
-                        <NavLink className="btn btn-danger nav-link" to={{
-                            pathname: this.state.isLoggedIn && this.state.isAdmin ? "/admin" : "/",
-                            search: '',
-                            state: { sessionToken: this.state.sessionToken }
-                        }}>Admin</NavLink>
-                    </NavItem>
+                    {this.state.role !== 3
+                    ? null
+                    : (
+                        <NavItem>
+                            <NavLink
+                                className="btn btn-danger nav-link"
+                                to={{
+                                    pathname: this.state.sessionToken && this.state.role ? "/admin" : "/",
+                                    search: '',
+                                    state: { sessionToken, role }
+                                }}
+                                onClick={this.toggle.bind(this)}
+                            >
+                                Admin
+                            </NavLink>
+                        </NavItem>
+                    )
                     }
                     {/* Anonymous user Links */}
-                    {!this.state.isLoggedIn && 
-                    <>
-                        <NavItem>
-                            <NavLink className="nav-link" to={{
-                                pathname: this.state.isLoggedIn ? "/" : "/log-in",
-                                search: '',
-                                state: { sessionToken: this.state.sessionToken }
-                            }}
-                            >
-                                Log In
-                            </NavLink>
-                        </NavItem>
-                        <NavItem>
-                            <NavLink className="nav-link" to={{
-                                pathname: this.state.isLoggedIn ? "/" : "/register",
-                                search: '',
-                                state: { sessionToken: this.state.sessionToken }
-                            }}
-                            >
-                                Register
-                            </NavLink>
-                        </NavItem>
-                    </>
+                    {this.state.sessionToken
+                        ? (
+                            <NavItem>
+                                <NavLink className="nav-link" to={{
+                                    pathname: this.state.sessionToken ? "/log-out" : "/",
+                                    search: '',
+                                    state: { sessionToken, role }
+                                }}
+                                onClick={this.toggle.bind(this)}
+                                >
+                                    Log Out
+                                </NavLink>
+                            </NavItem>
+                        )
+                        : (
+                        <>
+                            <NavItem>
+                                <NavLink
+                                    className="nav-link"
+                                    to={{
+                                        pathname: this.state.sessionToken ? "/" : "/log-in",
+                                        search: '',
+                                        state: { sessionToken, role }
+                                    }}
+                                    onClick={this.toggle.bind(this)}
+                                >
+                                    Log In
+                                </NavLink>
+                            </NavItem>
+                            <NavItem>
+                                <NavLink
+                                    className="nav-link"
+                                    to={{
+                                        pathname: this.state.sessionToken ? "/" : "/register",
+                                        search: '',
+                                        state: { sessionToken, role }
+                                    }}
+                                    onClick={this.toggle.bind(this)}
+                                >
+                                    Register
+                                </NavLink>
+                            </NavItem>
+                        </>
+                        )
                     }
-                    {/* Authenticated user Link */}
-                    {this.state.isLoggedIn &&
-                        <NavItem>
-                            <NavLink className="nav-link" to={{
-                                pathname: this.state.isLoggedIn ? "/log-out" : "/",
-                                search: '',
-                                state: { sessionToken: this.state.sessionToken }
-                            }}
-                            >
-                                Log Out
-                            </NavLink>
-                        </NavItem>
-                    }
-                </Nav>
+                    </Nav>
               </Collapse>
             </Navbar>
          );

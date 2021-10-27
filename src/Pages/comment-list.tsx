@@ -17,15 +17,15 @@ interface PageProps {
     }
 }
 
-class About extends React.Component<PageProps, PageState>{
+class CommentList extends React.Component<PageProps, PageState>{
     constructor(props: PageProps) {
-        const  { location: { state: { sessionToken = '', role = 0 } = {} } = {} } = props;
         super(props);
+        const { location: { state: { sessionToken = '', role = 0 } = {} } = {} } = props;
         this.state = { sessionToken, role };
     };
   
     componentDidMount() {
-        const  { location: { state: { sessionToken = '', role = 0 } = {} } = {} } = this.props;
+        const { location: { state: { sessionToken = '', role = 0 } = {} } = {} } = this.props;
         this.setState({ sessionToken, role });
     }
 
@@ -35,10 +35,10 @@ class About extends React.Component<PageProps, PageState>{
             <div className="App">
                 <NavigationBar {...{ location: { state: { sessionToken, role } } }}/>
                 <Header />
-                <h2>About Us placeholder</h2>
+                <h2>Comment List placeholder</h2>
             </div>
         );
     }
 }
 
-export default About;
+export default CommentList;

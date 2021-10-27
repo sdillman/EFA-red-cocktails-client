@@ -1,9 +1,11 @@
 import ReactDOM from 'react-dom';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './index.css';
-import App from './App';
 import About from "./Pages/about";
+import Admin from "./Pages/admin";
 import Cocktail from "./Pages/cocktail";
+import CocktailList from "./Pages/cocktail-list";
+import CommentList from "./Pages/comment-list";
 import Register from "./Pages/register";
 import Login from "./Pages/login";
 import Logout from "./Pages/logout";
@@ -13,15 +15,15 @@ import { BrowserRouter, Route } from 'react-router-dom';
 ReactDOM.render(
   <div className="App">
     <BrowserRouter>
-      <Route exact path="/register" component={Register} />
+      <Route exact path="/register"  component={Register} />
       <Route exact path="/log-out" component={Logout} />
       <Route exact path="/log-in" component={Login} />
-      <Route exact path="/admin" component={App} />
-      <Route exact path="/random-cocktail" component={Cocktail} />
-      <Route exact path="/my-comments" component={App} />
-      <Route exact path="/my-cocktails" component={App} />
+      <Route exact path="/admin" component={Admin} />
+      <Route exact path="/cocktail" component={Cocktail} />
+      <Route exact path="/comment-list" component={CommentList} />
+      <Route exact path="/cocktail-list" component={CocktailList} />
       <Route exact path="/about" component={About} />
-      <Route exact path="/" component={App} />
+      <Route exact path="/" component={Cocktail} />
     </BrowserRouter>
   </div>,
   document.getElementById('root')
