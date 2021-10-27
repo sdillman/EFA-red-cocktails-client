@@ -1,4 +1,5 @@
 import React from 'react';
+import { Redirect } from 'react-router-dom';
 import { Form, FormGroup, Label, Input, Button } from 'reactstrap';
 import Header from '../components/header';
 import NavigationBar from '../common/navigationbar';
@@ -10,6 +11,7 @@ interface PageState {
     role: number;
     isValid: boolean;
     sessionToken: string;
+    redirect: boolean;
 }
 
 interface PageProps {
@@ -35,7 +37,8 @@ class Register extends React.Component<PageProps, PageState> {
         password: '',
         role: 0,
         isValid: false,
-        sessionToken
+        sessionToken,
+        redirect: false
       }
     };
 
@@ -88,13 +91,21 @@ class Register extends React.Component<PageProps, PageState> {
         if (data && data.sessionToken) {
             this.setState({
                 sessionToken: data.sessionToken,
-                role: 2
+                role: 2,
+                redirect: true
             });
         }
     };
     
 
     render() {
+        if (this.state.redirect) {
+            return <Redirect push to={{
+                pathname: '/cocktail',
+                search: '',
+                state: { sessionToken: '', role: 0 }
+            }} />
+        }
         const  { sessionToken = '', role = 0 } = this.state;
         return (
             <div className='App'>
